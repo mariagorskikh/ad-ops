@@ -1,0 +1,10 @@
+config.yaml
+.env
+.env.*
+ledger.csv
+ledger.jsonl
+*.ledger.csv
+*.ledger.jsonl
+ads/
+__pycache__/
+*.pyc

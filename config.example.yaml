@@ -1,0 +1,114 @@
+# ad-ops configuration
+# Copy this file to config.yaml (same folder) and fill it in.
+# config.yaml is git-ignored. Never put API keys or passwords here; use env vars.
+# You can also point AD_OPS_CONFIG at a config file somewhere else.
+
+brand:
+  name: Acme
+  domain: acme.com                      # landing pages must live on this domain
+  default_landing: https://acme.com/    # used when an ad has no landing of its own
+
+# Platforms you run. Set enabled: false for any you do not use.
+# IDs are only for building URLs and reports. They are not secrets, but keep them out of public repos.
+platforms:
+  google:
+    enabled: true
+    customer_id: "123-456-7890"         # shown top right in Google Ads
+    manager_id: ""                      # MCC id if you use one, else empty
+  meta:
+    enabled: true
+    ad_account_id: "<META_AD_ACCOUNT_ID>"   # the number after act= in Ads Manager URLs
+    page_name: "Acme"
+    pixel_id: "<META_PIXEL_ID>"
+  x:
+    enabled: false
+    ads_account_id: "<X_ADS_ACCOUNT_ID>"    # from ads.x.com/manager/<id>/campaigns
+    handle: "@acme"                          # the business handle, never a personal one
+  reddit:
+    enabled: false
+    ads_account_id: "<REDDIT_ADS_ACCOUNT_ID>"
+    pixel_id: "<REDDIT_PIXEL_ID>"
+    hands: user                         # "user" if the agent cannot open reddit.com and the user clicks
+  linkedin:
+    enabled: false
+    ad_account_id: "<LINKEDIN_AD_ACCOUNT_ID>"
+
+# UTM scheme. utm_content is the review key: one value per creative.
+utm:
+  required: [utm_source, utm_medium, utm_campaign, utm_content]
+  source_names:                         # value of utm_source per platform
+    google: google
+    meta: meta
+    x: x
+    reddit: reddit
+    linkedin: linkedin
+  medium:
+    search: paid_search
+    social: paid_social
+  # Campaign value per platform. Macros let the platform fill in its own ids.
+  campaign_macros:
+    google: "{campaignid}"
+    meta: "{{campaign.id}}"
+    reddit: "{{CAMPAIGN_ID}}"
+    x: ""                               # X has no reliable macro; use a fixed slug like spring-launch
+    linkedin: ""
+  term_macros:
+    google: "{adgroupid}"
+    meta: "{{adset.id}}"
+    reddit: "{{ADGROUP_ID}}"
+  creative_id_pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"   # e.g. spring-hero-01
+
+# Analytics: where real visits and conversions are counted.
+analytics:
+  tool: posthog                         # posthog | ga4 | plausible | none
+  pageview_event: "$pageview"           # posthog default; GA4 uses page_view
+  conversion_event: "sign_up"           # the event you judge ads on (posthog: "$identify" works for sign-ins)
+  posthog:
+    host: https://us.posthog.com        # or https://eu.posthog.com or your self-hosted URL
+    project_id_env: POSTHOG_PROJECT_ID  # name of the env var, not the value
+    api_key_env: POSTHOG_PERSONAL_API_KEY
+    # Optional data warehouse tables if you sync ad spend into PostHog:
+    google_ads_tables: googleads        # prefix, e.g. googleads.campaign_stats
+    reddit_ads_tables: redditads
+  ga4:
+    bigquery_table: "my-project.analytics_123456789.events_*"   # GA4 BigQuery export
+  plausible:
+    site_id: acme.com
+    api_key_env: PLAUSIBLE_API_KEY
+
+# Budget guard rails. The agent never exceeds these without the user raising them in chat.
+budgets:
+  currency: USD
+  default_daily_per_platform: 10
+  max_daily_per_platform: 50
+  max_daily_total: 100
+  scale_step_percent: 20                # largest single increase
+  scale_min_days_between: 3             # wait at least this long between increases
+
+# Ledger: every account change is one row.
+ledger:
+  path: ads/ledger.csv                  # .csv or .jsonl; relative paths resolve from the current directory
+  plans_dir: ads/plans                  # launch plans, one Markdown file per batch
+  reviews_dir: ads/reviews              # weekly review write-ups
+
+# Approval rules.
+approval:
+  require_exact_change: true            # the user approves the exact change, in chat, this session
+  sequence_counts_as_one: true          # "pause, edit, resume these 3 ads" is one approval for that sequence
+  never_accept_platform_recommendations: true
+  never_complete_reauth: true           # "Confirm it's you", passwords and 2FA are the user's to do
+
+# Review decision rules (see references/review.md).
+review:
+  min_impressions_before_judging: 1000
+  min_days_before_judging: 3
+  kill_ctr_below_fraction_of_median: 0.5
+  kill_cost_multiple_of_target: 2       # spent 2x target cost per conversion with zero conversions
+  target_cost_per_conversion: 50
+  fatigue_frequency: 3
+  fatigue_ctr_drop_percent: 30
+
+# Optional: a creative skill or folder that produces the ad files and copy.
+creative:
+  source_dir: ads/batches               # each batch folder holds images, video and a copy file
+  copy_rules_file: ""                   # optional path to your brand copy rules; checked before any new line goes live
