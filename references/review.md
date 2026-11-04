@@ -1,6 +1,6 @@
 # Review: the daily health check and the weekly review
 
-Reads and reports need no approval. Changes that come out of a review do, item by item.
+Reads and reports need no approval. In autonomous mode, the non-money changes a review calls for (pauses, negatives, link fixes, creative rotation within budget) are applied after the self-review gate. Budget increases wait for the user's yes. In review mode, every change waits for approval, item by item.
 
 ## Daily health check (a few minutes)
 
@@ -21,7 +21,7 @@ Reads and reports need no approval. Changes that come out of a review do, item b
    - Scale candidates: cost per conversion under target with enough volume. Raise by at most `budgets.scale_step_percent`, no more often than every `budgets.scale_min_days_between` days, never past the caps.
    - Fatigue: frequency above `fatigue_frequency`, or CTR down `fatigue_ctr_drop_percent` from its first week. Rotate the creative.
 5. **Write it up** in `<reviews_dir>/<YYYY-MM-DD>.md` with the template below, and show it in chat.
-6. **Apply only approved items**, then ledger, launch plan.
+6. **Act:** apply the non-money items (autonomous mode) or the approved items (review mode), then ledger, launch plan. List budget increases for the user's yes.
 
 ## What to look at per platform
 
@@ -46,10 +46,12 @@ Spend $X across N platforms. Y conversions. Best creative: <id> at $Z per conver
 ## Issues found
 - Broken links, disapprovals, stale utm_content, sync gaps.
 
-## Proposed changes (need approval, one by one)
-1. Pause <ad> on <platform>: CTR 0.4% vs median 1.1% after 3,200 impressions.
-2. Raise <campaign> from $10 to $12/day: $18 per conversion vs $50 target, 9 conversions.
-3. Add negatives to <campaign>: "free", "jobs", "login".
+## Changes made
+1. Paused <ad> on <platform>: CTR 0.4% vs median 1.1% after 3,200 impressions.
+2. Added negatives to <campaign>: "free", "jobs", "login".
+
+## Waiting for your yes (money)
+1. Raise <campaign> from $10 to $12/day: $18 per conversion vs $50 target, 9 conversions.
 ```
 
 For each ad in the chat version, show its visual (file path), text, keywords where relevant, budget and numbers, so the user can decide without opening the platforms.

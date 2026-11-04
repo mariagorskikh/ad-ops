@@ -91,10 +91,20 @@ ledger:
   plans_dir: ads/plans                  # launch plans, one Markdown file per batch
   reviews_dir: ads/reviews              # weekly review write-ups
 
+# Autonomy. How much the agent does on its own.
+autonomy:
+  mode: autonomous        # autonomous (default): asks setup questions once, then does the whole job and reports after.
+                          # review: stops for the user's okay before each account change (the old gates).
+  money_needs_approval: true   # always true: anything that spends money waits for the user's yes
+
 # Approval rules.
 approval:
-  require_exact_change: true            # the user approves the exact change, in chat, this session
-  sequence_counts_as_one: true          # "pause, edit, resume these 3 ads" is one approval for that sequence
+  # Always, in both modes: new paid campaigns or ad sets, budget or bid increases,
+  # a new platform or account, and anything over the caps wait for the user's yes in chat.
+  launch_plan_is_the_approval: true     # the user's yes on a launch plan covers building exactly that plan
+  require_exact_change: true            # review mode only: the user approves each exact change, in chat, this session
+  sequence_counts_as_one: true          # review mode only: "pause, edit, resume these 3 ads" is one approval
+  delete_only_when_asked: true          # deleting loses history; pause instead unless the user asked for delete
   never_accept_platform_recommendations: true
   never_complete_reauth: true           # "Confirm it's you", passwords and 2FA are the user's to do
 

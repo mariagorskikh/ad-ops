@@ -8,16 +8,19 @@ is its latest row. A change that is not in the ledger did not happen.
   ledger.py log platform=meta campaign="Spring Launch" ad="spring-hero-01 4x5" \
       creative_id=spring-hero-01 platform_id=1234567890 action=create status=live \
       budget_per_day=10 landing="https://acme.com/?utm_source=meta&utm_content=spring-hero-01" \
-      approved="user in chat 2026-03-02" notes="first launch"
+      approved="launch plan spring approved by user in chat 2026-03-02" notes="first launch"
   ledger.py log platform=google creative_id=spring-rsa-01 action=pause status=paused \
-      change="status live -> paused" approved="user in chat 2026-03-09"
+      change="status live -> paused" approved="self-review, autonomous mode"
   ledger.py live                      # latest row per ad where status is live
   ledger.py show spring-hero-01       # every row for a creative id, ad name, platform id or campaign
   ledger.py history --since 2026-03-01 [--platform meta]
 
 Ledger path: --ledger, else $AD_OPS_LEDGER, else ledger.path in the config.
 Actions: create, edit, copy, url, keywords, budget, bid, pause, resume, delete, tracking, note.
-Every action except "note" needs approved=... (who approved and when).
+Every action except "note" needs approved=...: the authority for the change. Use
+"self-review, autonomous mode" for changes the agent made after its self-review gate,
+"user in chat <date>" for money changes (new paid campaigns, budget or bid increases)
+and for every change in review mode.
 """
 from __future__ import annotations
 
@@ -153,7 +156,9 @@ def main() -> None:
         if row["action"] not in ACTIONS:
             sys.exit(f"unknown action {row['action']!r}; use one of {', '.join(sorted(ACTIONS))}")
         if row["action"] != "note" and not row.get("approved"):
-            sys.exit("account changes need approved=\"who and when\" (the user's okay on this exact change)")
+            sys.exit("account changes need approved=\"...\": the authority for this change "
+                     "(\"self-review, autonomous mode\", or \"user in chat <date>\" for money "
+                     "changes and in review mode)")
         if not (row.get("creative_id") or row.get("platform_id") or row.get("ad") or row.get("campaign")):
             sys.exit("log needs at least one of creative_id, platform_id, ad, campaign")
         row["timestamp"] = row.get("timestamp") or dt.datetime.now().isoformat(timespec="seconds")
