@@ -9,9 +9,21 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Claude%20Code-skill-2563eb" alt="Claude Code skill">
+  <img src="https://img.shields.io/badge/Claude%20Code-skill-D97757?logo=claude&logoColor=white" alt="Claude Code skill">
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT license">
   <img src="https://img.shields.io/badge/runs-autonomously-2563eb" alt="Runs autonomously">
+  <a href="https://maritime.sh"><img src="https://img.shields.io/badge/by-Maritime-111111" alt="by Maritime"></a>
+</p>
+
+<p align="center"><sub>WORKS WITH</sub><br>
+  <img src="https://img.shields.io/badge/Google%20Ads-4285F4?style=for-the-badge&logo=googleads&logoColor=white" alt="Google Ads">
+  <img src="https://img.shields.io/badge/Meta%20Ads-0467DF?style=for-the-badge&logo=meta&logoColor=white" alt="Meta Ads">
+  <img src="https://img.shields.io/badge/X%20Ads-000000?style=for-the-badge&logo=x&logoColor=white" alt="X Ads">
+  <img src="https://img.shields.io/badge/Reddit%20Ads-FF4500?style=for-the-badge&logo=reddit&logoColor=white" alt="Reddit Ads">
+  <img src="https://img.shields.io/badge/PostHog-F54E00?style=for-the-badge&logo=posthog&logoColor=white" alt="PostHog">
+  <img src="https://img.shields.io/badge/Google%20Analytics-E37400?style=for-the-badge&logo=googleanalytics&logoColor=white" alt="Google Analytics">
+  <img src="https://img.shields.io/badge/BigQuery-669DF6?style=for-the-badge&logo=googlebigquery&logoColor=white" alt="BigQuery">
+  <img src="https://img.shields.io/badge/Plausible-5850EC?style=for-the-badge&logo=plausibleanalytics&logoColor=white" alt="Plausible">
 </p>
 
 A Claude Code skill that runs your paid ad accounts once the creative exists.
@@ -151,6 +163,15 @@ Platform click paths are accurate as of 2026. Ad UIs change often; when a step n
 ad-ops does not write ads. If you have a skill or process that produces images, video and copy, set `creative.source_dir` to its output folder and `creative.copy_rules_file` to its brand rules. ad-ops reads those files and runs the accounts.
 
 ## Built by Maritime
+
+<p align="center">
+  <a href="https://maritime.sh">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="assets/maritime-dark.png">
+      <img src="assets/maritime-light.png" alt="Maritime logo" height="64">
+    </picture>
+  </a>
+</p>
 
 This skill is open-sourced by [Maritime](https://maritime.sh) (YC F26), the cloud platform that gives every AI agent its own computer: sandboxes, agent boxes that keep their disk, and Linux desktops, Windows desktops and Android phones your agent can see and click. We run this skill ourselves.
 
